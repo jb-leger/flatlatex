@@ -170,19 +170,19 @@ class converter:
     def __indexed(self,a,b):
         f_sub = transliterate(data.subscript)
         bsub,ok = f_sub(b)
-        if ok:
-            return a+bsub
         if self.__is_complex_expr(a):
             a = '('+a+')'
+        if ok:
+            return a+bsub
         return a+'['+b+']'
     
     def __exponent(self,a,b):
         f_sup = transliterate(data.superscript)
         bsup,ok = f_sup(b)
-        if ok:
-            return a+bsup
         if self.__is_complex_expr(a):
             a = '('+a+')'
+        if ok:
+            return a+bsup
         if self.__is_complex_expr(b):
             b = '('+b+')'
         return a+'^'+b
