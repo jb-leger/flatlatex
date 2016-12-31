@@ -215,6 +215,15 @@ class converter:
         return comb[1] + '(' + expr + ')'
 
     def add_newcommand(self, one_newcommand):
+        """Add a command definiton using LaTeX syntax.
+
+        :param expr: a valid \\newcommand (or \\renewcommand or \\def)
+            definition.
+            Examples:
+            - r'\\newcommand\\prob{\\mathbb{P}}'
+            - r'\\newcommand\\binom[2]{\\frac{#2!}{#1!(#2-#1)!}}'
+        """
+
         parsed = parser.parse(one_newcommand)
         if not (len(parsed) in (3,6)):
             raise LatexSyntaxError

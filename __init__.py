@@ -29,13 +29,22 @@ LaTeX math to Unicode text converter
 flatlatex is a basic converter from LaTeX math to human readable text math using
 unicode characters.
 
-Example:
+Basic example:
 
     >>> import flatlatex
     >>> c = flatlatex.converter()
     >>> c.convert(
     ... r'\\forall \\eta>0\\, \\exists n\\in\\mathbb{N}\\, \\forall i>n\\, |u_i-n|<\\eta')
     '∀η>0 ∃n∊ℕ ∀i>n |uᵢ-n|<η'
+
+Commands can be added with LaTeX syntax:
+
+    >>> import flatlatex
+    >>> c = flatlatex.converter()
+    >>> c.add_newcommand(r'\\newcommand\\prob{\\mathbb{P}}')
+    >>> c.add_newcommand(r'\\newcommand\\binom[2]{\\frac{#2!}{#1!(#2-#1)!}}')
+    >>> c.convert(r'\\prob(X=k)\\,=\\,\\binom{k}{n}\\times p^k(1-p)^{n-k}')
+    'ℙ(X=k) = (n!)/(k!(n-k)!)×pᵏ(1-p)ⁿ⁻ᵏ'
 
 The behavior can be change:
 
