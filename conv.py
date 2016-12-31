@@ -71,6 +71,7 @@ class converter:
 
         # others
         self.__cmds[r'\frac'] = latexfuntypes.latexfun(self.__latexfun_frac,2)
+        self.__cmds[r'\sqrt'] = latexfuntypes.latexfun(self.__latexfun_sqrt,1)
 
         # newcommands
         for nc in data.newcommands:
@@ -281,6 +282,13 @@ class converter:
         if self.__is_complex_expr(b):
             b = '('+b+')'
         return a+'/'+b
+
+    def __latexfun_sqrt(self,inputs):
+        a = inputs[0]
+
+        if self.__is_complex_expr(a):
+            a = '(' + a + ')'
+        return '√'+a
 
 
     
