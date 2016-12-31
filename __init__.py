@@ -34,8 +34,8 @@ Basic example:
     >>> import flatlatex
     >>> c = flatlatex.converter()
     >>> c.convert(
-    ... r'\\forall \\eta>0\\, \\exists n\\in\\mathbb{N}\\, \\forall i>n\\, |u_i-n|<\\eta')
-    '∀η>0 ∃n∊ℕ ∀i>n |uᵢ-n|<η'
+    ... r'\\forall \\eta>0\\, \\exists n\\in\\mathbb{N}\\, \\forall i>n\\, |u_i-\\mathcal{l}|<\\eta')
+    '∀η>0 ∃n∊ℕ ∀i>n |uᵢ-𝓵|<η'
 
 Commands can be added with LaTeX syntax:
 
