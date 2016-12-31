@@ -985,3 +985,12 @@ combinings = {
     r'\vec': ('\u20d7','vec'),
     r'\underline': ('\u0332','underline'),
 }
+
+newcommands = (
+    r'\newcommand\mathcal[1]{\cal{#1}}',
+    r'\newcommand\mathit[1]{\it{#1}}',
+    r'\newcommand\mathbf[1]{\bf{#1}}',
+    r'\newcommand\mathbb[1]{\bb{#1}}',
+    r'\newcommand\mathmono[1]{\mono{#1}}',
+    r'\newcommand\mathfrak[1]{\frak{#1}}',
+)

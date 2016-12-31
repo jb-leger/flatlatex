@@ -72,6 +72,10 @@ class converter:
         # others
         self.__cmds[r'\frac'] = latexfuntypes.latexfun(self.__latexfun_frac,2)
 
+        # newcommands
+        for nc in data.newcommands:
+            self.add_newcommand(nc)
+
         # config section
         self.allow_zw = True
         self.allow_combinings = True
@@ -209,6 +213,39 @@ class converter:
             if self.allow_combinings:
                 return expr + comb[0]
         return comb[1] + '(' + expr + ')'
+
+    def add_newcommand(self, one_newcommand):
+        parsed = parser.parse(one_newcommand)
+        if not (len(parsed) in (3,6)):
+            raise LatexSyntaxError
+        ok=False
+        if parsed[0][0] == 'cmd':
+            if parsed[0][1] in (
+                    r'\newcommand',
+                    r'\renewcommand',
+                    r'\def'):
+                ok=True
+        if not ok:
+            raise LatexSyntaxError
+        nargs = 0
+        if len(parsed)==6:
+            if parsed[2] == ('char','[') and parsed[4] == ('char',']'):
+                nargs = int(parsed[3][1])
+            else:
+                raise LatexSyntaxError
+        cmdname = parsed[1][1]
+        cmdexpr = parsed[-1][1]
+
+        def thefun(args):
+            expr = cmdexpr
+            for i in range(len(args)):
+                expr = regex.sub('#%i'%(i+1),args[i],expr)
+            return self.convert(expr)
+
+        self.__cmds[cmdname] = latexfuntypes.latexfun(
+                lambda x: thefun(x),
+                nargs)
+        return None
 
     def __latexfun_frac(self,inputs):
         a = inputs[0]
