@@ -32,7 +32,16 @@ class LatexSyntaxError(SyntaxError):
     pass
 
 class converter:
+    """flatlatex converter class
+
+    :attrib allow_zw: boolean which indicate if zero width characters are allowed
+        (True by default).
+    :attrib allow_combinings: boolean which indicate if combining characters are allowed
+        (True by default).
+    """
+
     def __init__(self):
+        """Initialize a convert method."""
 
         # transliteration
         self.__cmds = {
@@ -68,6 +77,10 @@ class converter:
         self.allow_combinings = True
 
     def convert(self, expr):
+        """Convert LaTeX math to Unicode text.
+
+        :param expr: LaTeX math expression to convert"""
+
         parsed = parser.parse(expr)
         outvec = []
         idx = 0

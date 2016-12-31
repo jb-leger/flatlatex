@@ -22,4 +22,34 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
+"""
+LaTeX math to Unicode text converter
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+flatlatex is a basic converter from LaTeX math to human readable text math using
+unicode characters.
+
+Example:
+
+    >>> import flatlatex
+    >>> c = flatlatex.converter()
+    >>> c.convert(
+    ... r'\\forall \\eta>0\\, \\exists n\\in\\mathbb{N}\\, \\forall i>n\\, |u_i-n|<\\eta')
+    '∀η>0 ∃n∊ℕ ∀i>n |uᵢ-n|<η'
+
+The behavior can be change:
+
+    >>> import flatlatex
+    >>> c = flatlatex.converter()
+    >>> c.convert(r'\\frac{8}{9}')
+    '⁸⁄₉'
+    >>> c.allow_zw = False
+    >>> c.convert(r'\\frac{8}{9}')
+    '8/9'
+"""
+
+__title__ = 'flatlatex'
+__author__ = 'Jean-Benoist Leger'
+__licence__ = 'BSD-2'
+
 from .conv import converter
