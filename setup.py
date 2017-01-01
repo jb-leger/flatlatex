@@ -19,22 +19,16 @@ here = path.abspath(path.dirname(__file__))
 # garder le `__doc__`, tu peux en profiter pour attraper le `__version__` en
 # meme temps.
 ###
-with open(path.join(here, 'flatlatex/__init__.py'), encoding='utf-8') as f:
-    long_description = ''
-    ok=False
-    while True:
-        s=f.readline()
-        if s is None:
-            break
-        if ok:
-            if s[0:3]=='"""':
-                break
-            else:
-                long_description+=s
-        else:
-            if s[0:3]=='"""':
-                ok=True
+with open(path.join(here, 'flatlatex', '__init__.py'), encoding='utf-8') as f:
+    ast = compile(f.read(), '__init__.py', 'exec')
+    fake_global = {'__name__': '__main__'}
+    try:
+        exec(ast, fake_global)
+    except (SystemError, ImportError) as e:
+        print('System error')
 
+    long_description = fake_global['__doc__']
+    version = fake_global['__version__']
 
 
 setup(
@@ -43,7 +37,7 @@ setup(
     # Versions should comply with PEP440.  For a discussion on single-sourcing
     # the version across setup.py and the project code, see
     # https://packaging.python.org/en/latest/single_source_version.html
-    version='0.1',
+    version=version,
 
     description='A LaTeX math converter to unicode text',
     long_description=long_description,
