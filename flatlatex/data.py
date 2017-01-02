@@ -1,15 +1,15 @@
 # Copyright (c) 2016, Jean-Benoist Leger <jb@leger.tf>
 # All rights reserved.
-# 
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
-# 
+#
 # 1. Redistributions of source code must retain the above copyright notice,
 #    this list of conditions and the following disclaimer.
 # 2. Redistributions in binary form must reproduce the above copyright
 #    notice, this list of conditions and the following disclaimer in the
 #    documentation and/or other materials provided with the distribution.
-# 
+#
 # THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
 # AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
 # IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -23,23 +23,23 @@
 # POSSIBILITY OF SUCH DAMAGE.
 
 known_fracts = {
-    ('1','2'): '½',
-    ('1','3'): '⅓',
-    ('2','3'): '⅔',
-    ('1','4'): '¼',
-    ('3','4'): '¾',
-    ('1','5'): '⅕',
-    ('2','5'): '⅖',
-    ('3','5'): '⅗',
-    ('4','5'): '⅘',
-    ('1','6'): '⅙',
-    ('5','6'): '⅚',
-    ('1','7'): '⅐',
-    ('1','8'): '⅛',
-    ('3','8'): '⅜',
-    ('5','8'): '⅝',
-    ('7','8'): '⅞',
-    ('1','9'): '⅑',
+    ('1', '2'): '½',
+    ('1', '3'): '⅓',
+    ('2', '3'): '⅔',
+    ('1', '4'): '¼',
+    ('3', '4'): '¾',
+    ('1', '5'): '⅕',
+    ('2', '5'): '⅖',
+    ('3', '5'): '⅗',
+    ('4', '5'): '⅘',
+    ('1', '6'): '⅙',
+    ('5', '6'): '⅚',
+    ('1', '7'): '⅐',
+    ('1', '8'): '⅛',
+    ('3', '8'): '⅜',
+    ('5', '8'): '⅝',
+    ('7', '8'): '⅞',
+    ('1', '9'): '⅑',
 }
 
 subscript = {
@@ -140,8 +140,8 @@ superscript = {
     '∊': 'ᵋ',
     'θ': 'ᶿ',
     'ι': 'ᶥ',
-    'Φ': 'ᶲ', 
-    'φ': 'ᵠ', 
+    'Φ': 'ᶲ',
+    'φ': 'ᵠ',
     'χ': 'ᵡ',
 }
 
@@ -622,8 +622,6 @@ mono = {
 }
 
 
-
-
 symbols = {
     r'\_': '_',
     r'\\': '\\',
@@ -967,20 +965,20 @@ symbols = {
 }
 
 combinings = {
-    r'\hat': ('\u0302','hat'),
-    r'\grave': ('\u0301','grave'),
-    r'\dot': ('\u0307','dot'),
-    r'\not': ('\u0338','not'),
-    r'\overrightarrow': ('\u20d7','overrightarrow'),
-    r'\overline': ('\u0305','overline'),
-    r'\tilde': ('\u0303','tilde'),
-    r'\bar': ('\u0304','bar'),
-    r'\acute': ('\u0300','acute'),
-    r'\ddot': ('\u0308','ddot'),
-    r'\overleftarrow': ('\u20d6','overleftarrow'),
-    r'\check': ('\u030c','check'),
-    r'\vec': ('\u20d7','vec'),
-    r'\underline': ('\u0332','underline'),
+    r'\hat': ('\u0302', 'hat'),
+    r'\grave': ('\u0301', 'grave'),
+    r'\dot': ('\u0307', 'dot'),
+    r'\not': ('\u0338', 'not'),
+    r'\overrightarrow': ('\u20d7', 'overrightarrow'),
+    r'\overline': ('\u0305', 'overline'),
+    r'\tilde': ('\u0303', 'tilde'),
+    r'\bar': ('\u0304', 'bar'),
+    r'\acute': ('\u0300', 'acute'),
+    r'\ddot': ('\u0308', 'ddot'),
+    r'\overleftarrow': ('\u20d6', 'overleftarrow'),
+    r'\check': ('\u030c', 'check'),
+    r'\vec': ('\u20d7', 'vec'),
+    r'\underline': ('\u0332', 'underline'),
 }
 
 newcommands = (
