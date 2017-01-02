@@ -621,6 +621,15 @@ mono = {
     '9': '𝟿',
 }
 
+transliterators = {
+    r'\bb': bb,
+    r'\bf': bf,
+    r'\cal': cal,
+    r'\frak': frak,
+    r'\it': it,
+    r'\mono': mono,
+}
+
 
 symbols = {
     r'\_': '_',

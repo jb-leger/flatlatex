@@ -42,16 +42,11 @@ class converter:
 
     def __init__(self):
         """Initialize a convert method."""
+        self.__cmds = {}
 
         # transliteration
-        self.__cmds = {
-            r'\bb': transliterator(data.bb),
-            r'\bf': transliterator(data.bf),
-            r'\cal': transliterator(data.cal),
-            r'\frak': transliterator(data.frak),
-            r'\it': transliterator(data.it),
-            r'\mono': transliterator(data.mono),
-        }
+        for k,v in data.transliterators.items():
+            self.__cmds[k] = transliterator(v)
 
         # symbols
         def makefun(symb):
