@@ -27,4 +27,6 @@ class latexfun:
         self.fun = fun
         self.nargs = nargs
 
+class LatexSyntaxError(SyntaxError):
+    pass
 

@@ -23,10 +23,13 @@
 # POSSIBILITY OF SUCH DAMAGE.
 
 import regex
+from .latexfuntypes import LatexSyntaxError
 
 def parse_one_element(s):
     R = r'((?>\\(?:[^A-Za-z]|[A-Za-z]+))|(?>[^\{\}\\])|\{(?1)*\})'
     r = regex.match(R,s)
+    if not r:
+        raise LatexSyntaxError
     s = s[r.span()[1]:]
     c = r.captures()[0]
     if c[0] == '\\':

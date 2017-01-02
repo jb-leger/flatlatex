@@ -28,8 +28,7 @@ import regex
 from . import latexfuntypes
 from . import parser
 
-class LatexSyntaxError(SyntaxError):
-    pass
+from .latexfuntypes import LatexSyntaxError
 
 class converter:
     """flatlatex converter class
