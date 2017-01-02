@@ -60,6 +60,18 @@ def test_newcommands_consistancy():
             a = int(parsed[3][1])
             assert a>=0
 
+def test_replicated_command():
+    datasets = [
+            data.symbols.keys(), 
+            data.combinings.keys(),
+            data.transliterators.keys(),
+    ]
+    datasets.append([parser.parse(nc)[1][1] for nc in data.newcommands])
+    for i in range(len(datasets)):
+        for j in range(i + 1, len(datasets)):
+            s1 = set(datasets[i])
+            s2 = set(datasets[j])
+            assert len(s1.intersection(s2)) == 0
 
         
 
