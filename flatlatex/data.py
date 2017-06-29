@@ -61,6 +61,7 @@ subscript = {
     'a': 'ₐ',
     'e': 'ₑ',
     'i': 'ᵢ',
+    'j': '\N{LATIN SUBSCRIPT SMALL LETTER J}',
     'o': 'ₒ',
     'r': 'ᵣ',
     'u': 'ᵤ',
