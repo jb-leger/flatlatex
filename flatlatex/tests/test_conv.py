@@ -5,7 +5,7 @@ def test_conv1():
     c = converter()
     r = c.convert(
             r'\forall \eta>0\, \exists n\in\mathbb{N}\, \forall i>n\, |u_i-\mathcal{l}|<\eta')
-    assert r=='∀η>0 ∃n∊ℕ ∀i>n |uᵢ-𝓵|<η'
+    assert r=='∀η>0 ∃n∈ℕ ∀i>n |uᵢ-𝓵|<η'
 
 def test_conv2():
     c = converter()
