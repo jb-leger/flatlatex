@@ -2,6 +2,8 @@
 from .. import data
 from .. import parser
 
+import ast
+
 def test_known_fracts():
     assert type(data.known_fracts) is dict
     for k,v in data.known_fracts.items():
@@ -73,5 +75,22 @@ def test_replicated_command():
             s2 = set(datasets[j])
             assert len(s1.intersection(s2)) == 0
 
-        
 
+def test_replicated_in_the_same_dict():
+    with open(data.__file__) as f:
+        data_ast = ast.parse(f.read())
+
+    def toobj(x):
+        if type(x) is ast.Tuple:
+            return tuple(toobj(v) for v in x.elts)
+        return x.s
+
+    for seg in data_ast.body:
+        if type(seg) is ast.Assign:
+            if type(seg.value) is ast.Dict:
+                keys = [toobj(k) for k in seg.value.keys]
+                count = {}
+                for k in keys:
+                    count[k] = count[k] + 1 if k in count else 1
+                for k, c in count.items():
+                    assert c == 1, "duplicated key in dict: %s" % k
