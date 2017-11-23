@@ -634,6 +634,9 @@ transliterators = {
 
 symbols = {
     r'\_': '_',
+    r'\|': '‖',
+    r'\lVert': '‖',
+    r'\rVert': '‖',
     r'\\': '\\',
     r'\aleph': 'ℵ',
     r'\alpha': 'α',
