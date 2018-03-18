@@ -56,7 +56,7 @@ def main():
                         help="Disallow zero-width characters to be used",
                         action="store_false",
                         default=True)
-    parser.add_argument("input", type=str, nargs="?",
+    parser.add_argument("input", type=str, nargs=1,
                         help="The latex string to convert")
 
     args = parser.parse_args()
