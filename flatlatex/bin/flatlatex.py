@@ -49,11 +49,11 @@ def main():
         description="Convert latex entries to flat unicode"
     )
     parser.add_argument('-C', '--disallow-combinings',
-                        help="Allow combining characters to be used",
+                        help="Disallow combining characters to be used",
                         action="store_false",
                         default=True)
     parser.add_argument('-Z', '--disallow-zero-width',
-                        help="Allow zero-width characters to be used",
+                        help="Disallow zero-width characters to be used",
                         action="store_false",
                         default=True)
     parser.add_argument("input", type=str, nargs="?",
