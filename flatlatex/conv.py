@@ -40,7 +40,7 @@ class converter:
         (True by default).
     """
 
-    def __init__(self):
+    def __init__(self, allow_zw=True, allow_combinings=True):
         """Initialize a convert method."""
         self.__cmds = {}
 
@@ -73,8 +73,8 @@ class converter:
             self.add_newcommand(nc)
 
         # config section
-        self.allow_zw = True
-        self.allow_combinings = True
+        self.allow_zw = allow_zw
+        self.allow_combinings = allow_combinings
 
     def convert(self, expr):
         """Convert LaTeX math to Unicode text.
