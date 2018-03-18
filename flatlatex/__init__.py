@@ -21,20 +21,22 @@
 # CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
-
 """
 LaTeX math to Unicode text converter
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-flatlatex is a basic converter from LaTeX math to human readable text math using
-unicode characters.
+flatlatex is a basic converter from LaTeX math to human readable text math
+using unicode characters.
 
 Basic example:
 
     >>> import flatlatex
     >>> c = flatlatex.converter()
     >>> c.convert(
-    ... r'\\forall \\eta>0\\, \\exists n\\in\\mathbb{N}\\, \\forall i>n\\, |u_i-\\mathcal{l}|<\\eta')
+    ... (
+    ...     r'\\forall \\eta>0\\, \\exists n\\in\\mathbb{N}\\, \\forall i>n\\,'
+    ...     r' |u_i-\\mathcal{l}|<\\eta'
+    ... ))
     '∀η>0 ∃n∈ℕ ∀i>n |uᵢ-𝓵|<η'
 
 Commands can be added with LaTeX syntax:

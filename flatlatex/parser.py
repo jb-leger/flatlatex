@@ -43,9 +43,9 @@ def parse_one_element(s):
 
 
 def parse(s):
-    l = []
+    ret = []
     while len(s) > 0:
         m, s = parse_one_element(s)
         if not (m[1] == ' '):
-            l.append(m)
-    return l
+            ret.append(m)
+    return ret

@@ -34,10 +34,10 @@ from .latexfuntypes import LatexSyntaxError
 class converter:
     """flatlatex converter class
 
-    :attrib allow_zw: boolean which indicate if zero width characters are allowed
-        (True by default).
-    :attrib allow_combinings: boolean which indicate if combining characters are allowed
-        (True by default).
+    :attrib allow_zw: boolean which indicate if zero width characters are
+        allowed (True by default).
+    :attrib allow_combinings: boolean which indicate if combining characters
+        are allowed (True by default).
     """
 
     def __init__(self, allow_zw=True, allow_combinings=True):
@@ -45,7 +45,7 @@ class converter:
         self.__cmds = {}
 
         # transliteration
-        for k,v in data.transliterators.items():
+        for k, v in data.transliterators.items():
             self.__cmds[k] = transliterator(v)
 
         # symbols
@@ -125,7 +125,8 @@ class converter:
         for idx in range(len(outvec)):
             if outvec[idx][0] == 'oper' and outvec[idx][1] == '^':
                 if idx + 2 < len(outvec):
-                    if outvec[idx + 2][0] == 'oper' and outvec[idx + 2][1] == '_':
+                    if (outvec[idx + 2][0] == 'oper' and
+                            outvec[idx + 2][1] == '_'):
                         # we invert ^ and _
                         (
                             outvec[idx],

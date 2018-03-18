@@ -42,4 +42,6 @@ def transliterate(alphabet):
 
 
 def transliterator(alphabet):
-    return latexfuntypes.latexfun(lambda x: transliterate(alphabet)(x[0])[0], 1)
+    return latexfuntypes.latexfun(
+        lambda x: transliterate(alphabet)(x[0])[0], 1
+    )
