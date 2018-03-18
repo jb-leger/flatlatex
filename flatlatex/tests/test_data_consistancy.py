@@ -107,7 +107,7 @@ def test_replicated_command():
 
 
 def test_replicated_in_the_same_dict():
-    with open(data.__file__) as f:
+    with open(data.__file__, encoding='utf8') as f:
         data_ast = ast.parse(f.read())
 
     def toobj(x):
