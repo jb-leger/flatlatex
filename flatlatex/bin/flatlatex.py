@@ -41,7 +41,7 @@ def do_convert(arguments):
         arguments.disallow_combinings,
     )
 
-    return converter.convert(arguments.input)
+    return converter.convert(arguments.input[0])
 
 
 def main():
