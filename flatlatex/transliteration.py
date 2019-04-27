@@ -29,7 +29,7 @@ def transliterate(alphabet):
     alphabet_keys = alphabet.keys()
 
     def fun(flat_input):
-        flat_output = ''
+        flat_output = ""
         success = True
         for c in flat_input:
             if c in alphabet_keys:
@@ -38,10 +38,9 @@ def transliterate(alphabet):
                 flat_output += c
                 success = False
         return (flat_output, success)
+
     return fun
 
 
 def transliterator(alphabet):
-    return latexfuntypes.latexfun(
-        lambda x: transliterate(alphabet)(x[0])[0], 1
-    )
+    return latexfuntypes.latexfun(lambda x: transliterate(alphabet)(x[0])[0], 1)

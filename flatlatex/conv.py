@@ -51,22 +51,20 @@ class converter:
         # symbols
         def makefun(symb):
             return lambda x: symb
+
         for cmd in data.symbols:
-            self.__cmds[cmd] = latexfuntypes.latexfun(
-                makefun(data.symbols[cmd]),
-                0)
+            self.__cmds[cmd] = latexfuntypes.latexfun(makefun(data.symbols[cmd]), 0)
 
         # combinings
         def makefun(comb):
             return lambda x: self.__latexfun_comb(comb, x)
+
         for cmd in data.combinings:
-            self.__cmds[cmd] = latexfuntypes.latexfun(
-                makefun(data.combinings[cmd]),
-                1)
+            self.__cmds[cmd] = latexfuntypes.latexfun(makefun(data.combinings[cmd]), 1)
 
         # others
-        self.__cmds[r'\frac'] = latexfuntypes.latexfun(self.__latexfun_frac, 2)
-        self.__cmds[r'\sqrt'] = latexfuntypes.latexfun(self.__latexfun_sqrt, 1)
+        self.__cmds[r"\frac"] = latexfuntypes.latexfun(self.__latexfun_frac, 2)
+        self.__cmds[r"\sqrt"] = latexfuntypes.latexfun(self.__latexfun_sqrt, 1)
 
         # newcommands
         for nc in data.newcommands:
@@ -84,49 +82,47 @@ class converter:
         parsed = parser.parse(expr)
         outvec = []
         idx = 0
-        while(idx < len(parsed)):
+        while idx < len(parsed):
             element = parsed[idx]
-            if element[0] == 'oper':
-                outvec.append(('oper', element[1]))
+            if element[0] == "oper":
+                outvec.append(("oper", element[1]))
                 idx += 1
                 continue
-            if element[0] == 'char':
-                outvec.append(('char', element[1]))
+            if element[0] == "char":
+                outvec.append(("char", element[1]))
                 idx += 1
                 continue
-            if element[0] == 'cmd':
+            if element[0] == "cmd":
                 try:
                     pycmd = self.__cmds[element[1]]
                 except KeyError:
-                    outvec.append(('char', element[1]))
+                    outvec.append(("char", element[1]))
                     idx += 1
                     continue
                 if len(parsed) <= idx + pycmd.nargs:
                     raise LatexSyntaxError
                 args = [
-                    self.convert(parsed[idx + k + 1][1])
-                    for k in range(pycmd.nargs)
+                    self.convert(parsed[idx + k + 1][1]) for k in range(pycmd.nargs)
                 ]
-                outvec.append(('char', pycmd.fun(args)))
+                outvec.append(("char", pycmd.fun(args)))
                 idx += 1 + pycmd.nargs
                 continue
-            if element[0] == 'subexpr':
-                outvec.append(('char', self.convert(element[1])))
+            if element[0] == "subexpr":
+                outvec.append(("char", self.convert(element[1])))
                 idx += 1
                 continue
             raise Exception
         # subandsuperscript
         for idx in range(len(outvec)):
-            if outvec[idx][0] == 'oper':
+            if outvec[idx][0] == "oper":
                 if len(outvec) <= idx + 1:
                     raise LatexSyntaxError
-                if outvec[idx + 1][0] == 'oper':
+                if outvec[idx + 1][0] == "oper":
                     raise LatexSyntaxError
         for idx in range(len(outvec)):
-            if outvec[idx][0] == 'oper' and outvec[idx][1] == '^':
+            if outvec[idx][0] == "oper" and outvec[idx][1] == "^":
                 if idx + 2 < len(outvec):
-                    if (outvec[idx + 2][0] == 'oper' and
-                            outvec[idx + 2][1] == '_'):
+                    if outvec[idx + 2][0] == "oper" and outvec[idx + 2][1] == "_":
                         # we invert ^ and _
                         (
                             outvec[idx],
@@ -144,15 +140,9 @@ class converter:
         idx = 0
         while idx < len(outvec):
             if idx + 1 < len(outvec):
-                if outvec[idx + 1][0] == 'oper' and outvec[idx + 1][1] == '_':
+                if outvec[idx + 1][0] == "oper" and outvec[idx + 1][1] == "_":
                     newoutvec.append(
-                        (
-                            'char',
-                            self.__indexed(
-                                outvec[idx][1],
-                                outvec[idx + 2][1]
-                            ),
-                        )
+                        ("char", self.__indexed(outvec[idx][1], outvec[idx + 2][1]))
                     )
                     idx += 3
                     continue
@@ -164,52 +154,46 @@ class converter:
         idx = 0
         while idx < len(outvec):
             if idx + 1 < len(outvec):
-                if outvec[idx + 1][0] == 'oper' and outvec[idx + 1][1] == '^':
+                if outvec[idx + 1][0] == "oper" and outvec[idx + 1][1] == "^":
                     newoutvec.append(
-                        (
-                            'char',
-                            self.__exponent(
-                                outvec[idx][1],
-                                outvec[idx + 2][1]
-                            ),
-                        )
+                        ("char", self.__exponent(outvec[idx][1], outvec[idx + 2][1]))
                     )
                     idx += 3
                     continue
             newoutvec.append(outvec[idx])
             idx += 1
         outvec = newoutvec
-        return ''.join([x[1] for x in outvec])
+        return "".join([x[1] for x in outvec])
 
     def __indexed(self, a, b):
         f_sub = transliterate(data.subscript)
         bsub, ok = f_sub(b)
         if self.__is_complex_expr(a):
-            a = '(' + a + ')'
+            a = "(" + a + ")"
         if ok:
             return a + bsub
-        return a + '[' + b + ']'
+        return a + "[" + b + "]"
 
     def __exponent(self, a, b):
         f_sup = transliterate(data.superscript)
         bsup, ok = f_sup(b)
         if self.__is_complex_expr(a):
-            a = '(' + a + ')'
+            a = "(" + a + ")"
         if ok:
             return a + bsup
         if self.__is_complex_expr(b):
-            b = '(' + b + ')'
-        return a + '^' + b
+            b = "(" + b + ")"
+        return a + "^" + b
 
     def __is_complex_expr(self, expr):
-        return (len(expr) > 1)
+        return len(expr) > 1
 
     def __latexfun_comb(self, comb, inputs):
         expr = inputs[0]
-        if(len(expr) == 1):
+        if len(expr) == 1:
             if self.allow_combinings:
                 return expr + comb[0]
-        return comb[1] + '(' + expr + ')'
+        return comb[1] + "(" + expr + ")"
 
     def add_newcommand(self, one_newcommand):
         """Add a command definiton using LaTeX syntax.
@@ -225,17 +209,14 @@ class converter:
         if not (len(parsed) in (3, 6)):
             raise LatexSyntaxError
         ok = False
-        if parsed[0][0] == 'cmd':
-            if parsed[0][1] in (
-                    r'\newcommand',
-                    r'\renewcommand',
-                    r'\def'):
+        if parsed[0][0] == "cmd":
+            if parsed[0][1] in (r"\newcommand", r"\renewcommand", r"\def"):
                 ok = True
         if not ok:
             raise LatexSyntaxError
         nargs = 0
         if len(parsed) == 6:
-            if parsed[2] == ('char', '[') and parsed[4] == ('char', ']'):
+            if parsed[2] == ("char", "[") and parsed[4] == ("char", "]"):
                 nargs = int(parsed[3][1])
             else:
                 raise LatexSyntaxError
@@ -245,12 +226,10 @@ class converter:
         def thefun(args):
             expr = cmdexpr
             for i in range(len(args)):
-                expr = regex.sub('#%i' % (i + 1), args[i], expr)
+                expr = regex.sub("#%i" % (i + 1), args[i], expr)
             return self.convert(expr)
 
-        self.__cmds[cmdname] = latexfuntypes.latexfun(
-            lambda x: thefun(x),
-            nargs)
+        self.__cmds[cmdname] = latexfuntypes.latexfun(lambda x: thefun(x), nargs)
         return None
 
     def __latexfun_frac(self, inputs):
@@ -271,17 +250,17 @@ class converter:
             b_sub, ok_sub = f_sub(b)
 
             if ok_sup and ok_sub:
-                return a_sup + '⁄' + b_sub
+                return a_sup + "⁄" + b_sub
 
         if self.__is_complex_expr(a):
-            a = '(' + a + ')'
+            a = "(" + a + ")"
         if self.__is_complex_expr(b):
-            b = '(' + b + ')'
-        return a + '/' + b
+            b = "(" + b + ")"
+        return a + "/" + b
 
     def __latexfun_sqrt(self, inputs):
         a = inputs[0]
 
         if self.__is_complex_expr(a):
-            a = '(' + a + ')'
-        return '√' + a
+            a = "(" + a + ")"
+        return "√" + a

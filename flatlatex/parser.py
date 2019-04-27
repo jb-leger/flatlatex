@@ -27,25 +27,25 @@ from .latexfuntypes import LatexSyntaxError
 
 
 def parse_one_element(s):
-    R = r'((?>\\(?:[^A-Za-z]|[A-Za-z]+))|(?>[^\{\}\\])|\{(?1)*\})'
+    R = r"((?>\\(?:[^A-Za-z]|[A-Za-z]+))|(?>[^\{\}\\])|\{(?1)*\})"
     r = regex.match(R, s)
     if not r:
         raise LatexSyntaxError
-    s = s[r.span()[1]:]
+    s = s[r.span()[1] :]
     c = r.captures()[0]
-    if c[0] == '\\':
-        return (('cmd', c), s)
-    if c[0] == '{':
-        return (('subexpr', c[1:-1]), s)
-    if c in ('_', '^'):
-        return (('oper', c), s)
-    return (('char', c), s)
+    if c[0] == "\\":
+        return (("cmd", c), s)
+    if c[0] == "{":
+        return (("subexpr", c[1:-1]), s)
+    if c in ("_", "^"):
+        return (("oper", c), s)
+    return (("char", c), s)
 
 
 def parse(s):
     ret = []
     while len(s) > 0:
         m, s = parse_one_element(s)
-        if not (m[1] == ' '):
+        if not (m[1] == " "):
             ret.append(m)
     return ret

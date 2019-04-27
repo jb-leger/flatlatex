@@ -24,7 +24,6 @@
 
 
 class latexfun:
-
     def __init__(self, fun, nargs):
         self.fun = fun
         self.nargs = nargs
