@@ -63,7 +63,7 @@ __title__ = "flatlatex"
 __author__ = "Jean-Benoist Leger"
 __licence__ = "BSD-2"
 
-version_info = (0, 8)
+version_info = (0, 9)
 __version__ = ".".join(map(str, version_info))
 
 from .conv import converter
