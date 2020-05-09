@@ -784,6 +784,7 @@ symbols = {
     r"\lll": "⋘",
     r"\lneqq": "≨",
     r"\lnot": "¬",
+    r"\neg": "¬",
     r"\lnsim": "⋦",
     r"\looparrowleft": "↫",
     r"\looparrowright": "↬",
