@@ -56,11 +56,11 @@ class converter:
             self.__cmds[cmd] = latexfuntypes.latexfun(makefun(data.symbols[cmd]), 0)
 
         # combinings
-        def makefun(comb):
+        def makefun_comb(comb):
             return lambda x: self.__latexfun_comb(comb, x)
 
         for cmd in data.combinings:
-            self.__cmds[cmd] = latexfuntypes.latexfun(makefun(data.combinings[cmd]), 1)
+            self.__cmds[cmd] = latexfuntypes.latexfun(makefun_comb(data.combinings[cmd]), 1)
 
         # others
         self.__cmds[r"\frac"] = latexfuntypes.latexfun(self.__latexfun_frac, 2)
