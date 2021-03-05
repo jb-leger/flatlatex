@@ -40,9 +40,11 @@ class converter:
         allowed (True by default).
     :attrib allow_combinings: boolean which indicate if combining characters
         are allowed (True by default).
+    :attrib ignore_newlines: boolean which indicates if newlines must be removed
+        (True by default).
     """
 
-    def __init__(self, allow_zw=True, allow_combinings=True):
+    def __init__(self, allow_zw=True, allow_combinings=True, ignore_newlines=True):
         """Initialize a convert method."""
         self.__cmds = {}
 
@@ -75,12 +77,15 @@ class converter:
         # config section
         self.allow_zw = allow_zw
         self.allow_combinings = allow_combinings
+        self.ignore_newlines = ignore_newlines
 
     def convert(self, expr):
         """Convert LaTeX math to Unicode text.
 
         :param expr: LaTeX math expression to convert"""
 
+        if self.ignore_newlines:
+            expr = expr.replace('\r','').replace('\n','')
         parsed = parser.parse(expr)
         outvec = []
         idx = 0
