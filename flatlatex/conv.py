@@ -22,9 +22,11 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
+import regex
+import unicodedata
+
 from . import data
 from .transliteration import transliterator, transliterate
-import regex
 from . import latexfuntypes
 from . import parser
 
@@ -186,7 +188,7 @@ class converter:
         return a + "^" + b
 
     def __is_complex_expr(self, expr):
-        return len(expr) > 1
+        return sum(1 for ch in expr if unicodedata.combining(ch) == 0) > 1
 
     def __latexfun_comb(self, comb, inputs):
         expr = inputs[0]

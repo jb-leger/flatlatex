@@ -62,3 +62,16 @@ def test_conv4():
     c.allow_combinings = False
     r = c.convert(r'\hat\alpha')
     assert r == 'hat(\u03B1)'
+
+def test_conv5():
+    c = converter()
+    r = c.convert(r'\hat{p}')
+    assert r == 'p\u0302'
+    r = c.convert(r'p_1')
+    assert r == 'p\u2081'
+    r = c.convert(r'\hat{p}_1')
+    assert r == 'p\u0302\u2081'
+    r = c.convert(r'\hat{pc}_1')
+    assert r == '(hat(pc))\u2081'
+
+
