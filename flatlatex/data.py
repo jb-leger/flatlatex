@@ -981,4 +981,5 @@ newcommands = (
     r"\newcommand\mathbb[1]{\bb{#1}}",
     r"\newcommand\mathmono[1]{\mono{#1}}",
     r"\newcommand\mathfrak[1]{\frak{#1}}",
+    r"\newcommand\binom[2]{binom(#1,#2)}",
 )
