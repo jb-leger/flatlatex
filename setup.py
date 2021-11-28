@@ -14,11 +14,6 @@ here = path.abspath(path.dirname(__file__))
 
 # Get the long description from the __init__.py file
 
-###
-# c'est toi qui extrait la doc comme ca ? sinon to peux exec' the module et
-# garder le `__doc__`, tu peux en profiter pour attraper le `__version__` en
-# meme temps.
-###
 with open(path.join(here, 'flatlatex', '__init__.py'), encoding='utf-8') as f:
     ast = compile(f.read(), '__init__.py', 'exec')
     fake_global = {'__name__': '__main__'}
@@ -43,7 +38,7 @@ setup(
     long_description=long_description,
 
     # The project's main homepage.
-    url='https://gitlab.crans.org/leger/flatlatex',
+    url='https://github.com/jb-leger/flatlatex',
 
     # Author details
     author='Jean-Benoist Leger',
