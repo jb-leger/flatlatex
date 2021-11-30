@@ -88,11 +88,7 @@ class converter:
         for nc in data.newcommands:
             self.add_newcommand(nc)
 
-    def convert(self, expr):
-        """Convert LaTeX math to Unicode text.
-
-        :param expr: LaTeX math expression to convert"""
-
+    def _convert(self, expr):
         if self.ignore_newlines:
             expr = expr.replace("\r", "").replace("\n", "")
         parsed = parser.parse(expr, keep_spaces=self.keep_spaces)
@@ -125,12 +121,12 @@ class converter:
                         raw_args.append(parsed[k][1])
                 if len(raw_args) != pycmd.nargs:
                     raise LatexSyntaxError
-                args = [self.convert(arg) for arg in raw_args]
+                args = [self._convert(arg) for arg in raw_args]
                 outvec.append(("char", pycmd.fun(args)))
                 idx += 1 + consumed
                 continue
             if element[0] == "subexpr":
-                outvec.append(("char", self.convert(element[1])))
+                outvec.append(("char", self._convert(element[1])))
                 idx += 1
                 continue
             raise Exception
@@ -185,7 +181,14 @@ class converter:
             newoutvec.append(outvec[idx])
             idx += 1
         outvec = newoutvec
-        return unicodedata.normalize("NFC", "".join([x[1] for x in outvec]))
+        return "".join([x[1] for x in outvec])
+
+    def convert(self, x):
+        """Convert LaTeX math to Unicode text.
+
+        :param expr: LaTeX math expression to convert"""
+
+        return unicodedata.normalize("NFC", self._convert(x))
 
     def __indexed(self, a, b):
         f_sub = transliterate(data.subscript)
@@ -249,7 +252,7 @@ class converter:
             expr = cmdexpr
             for i in range(len(args)):
                 expr = regex.sub("#%i" % (i + 1), args[i], expr)
-            return self.convert(expr)
+            return self._convert(expr)
 
         self.__cmds[cmdname] = latexfuntypes.latexfun(lambda x: thefun(x), nargs)
         return None
