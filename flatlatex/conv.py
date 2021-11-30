@@ -42,6 +42,8 @@ class converter:
         are allowed (True by default).
     :attrib ignore_newlines: boolean which indicates if newlines must be removed
         (True by default).
+    :attrib keep_spaces: boolean which indicates if spaces must be keeped
+        (False by default).
     """
 
     def __init__(
