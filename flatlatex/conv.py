@@ -185,7 +185,7 @@ class converter:
             newoutvec.append(outvec[idx])
             idx += 1
         outvec = newoutvec
-        return "".join([x[1] for x in outvec])
+        return unicodedata.normalize("NFC", "".join([x[1] for x in outvec]))
 
     def __indexed(self, a, b):
         f_sub = transliterate(data.subscript)
