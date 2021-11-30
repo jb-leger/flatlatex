@@ -22,56 +22,99 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
+import pytest
 
 from .. import converter
 
-def test_conv1():
-    c = converter()
+
+@pytest.mark.parametrize("keep_spaces", (False, True))
+def test_conv1(keep_spaces):
+    c = converter(keep_spaces=keep_spaces)
     r = c.convert(
         (
-            r'\forall \eta>0\, \exists n\in\mathbb{N}\, \forall i>n\, '
-            r'|u_i-\mathcal{l}|<\eta'
+            r"\forall \eta>0\, \exists n\in\mathbb{N}\, \forall i>n\, "
+            r"|u_i-\mathcal{l}|<\eta"
         )
     )
-    assert r == '∀η>0 ∃n∈ℕ ∀i>n |uᵢ-𝓵|<η'
+    assert r == "∀η>0 ∃n∈ℕ ∀i>n |uᵢ-𝓵|<η"
 
 
-def test_conv2():
-    c = converter()
-    c.add_newcommand(r'\newcommand\prob{\mathbb{P}}')
-    c.add_newcommand(r'\newcommand\binom[2]{\frac{#2!}{#1!(#2-#1)!}}')
-    r = c.convert(r'\prob(X=k)\,=\,\binom{k}{n}\times p^k(1-p)^{n-k}')
-    assert r == 'ℙ(X=k) = (n!)/(k!(n-k)!)×pᵏ(1-p)ⁿ⁻ᵏ'
+@pytest.mark.parametrize("keep_spaces", (False, True))
+def test_conv2(keep_spaces):
+    c = converter(keep_spaces=keep_spaces)
+    c.add_newcommand(r"\newcommand\prob{\mathbb{P}}")
+    c.add_newcommand(r"\newcommand\binom[2]{\frac{#2!}{#1!(#2-#1)!}}")
+    r = c.convert(r"\prob(X=k)\,=\,\binom{k}{n}\times p^k(1-p)^{n-k}")
+    assert r == "ℙ(X=k) = (n!)/(k!(n-k)!)×pᵏ(1-p)ⁿ⁻ᵏ"
 
 
 def test_conv3():
     c = converter()
     c.allow_zw = True
-    r = c.convert(r'\frac{8}{9}')
-    assert r == '⁸⁄₉'
+    r = c.convert(r"\frac{8}{9}")
+    assert r == "⁸⁄₉"
     c.allow_zw = False
-    r = c.convert(r'\frac{8}{9}')
-    assert r == '8/9'
+    r = c.convert(r"\frac{8}{9}")
+    assert r == "8/9"
 
 
 def test_conv4():
     c = converter()
     c.allow_combinings = True
-    r = c.convert(r'\hat\alpha')
-    assert r == '\u03B1\u0302'
+    r = c.convert(r"\hat\alpha")
+    assert r == "\u03B1\u0302"
     c.allow_combinings = False
-    r = c.convert(r'\hat\alpha')
-    assert r == 'hat(\u03B1)'
+    r = c.convert(r"\hat\alpha")
+    assert r == "hat(\u03B1)"
+
 
 def test_conv5():
     c = converter()
-    r = c.convert(r'\hat{p}')
-    assert r == 'p\u0302'
-    r = c.convert(r'p_1')
-    assert r == 'p\u2081'
-    r = c.convert(r'\hat{p}_1')
-    assert r == 'p\u0302\u2081'
-    r = c.convert(r'\hat{pc}_1')
-    assert r == '(hat(pc))\u2081'
+    r = c.convert(r"\hat{p}")
+    assert r == "p\u0302"
+    r = c.convert(r"p_1")
+    assert r == "p\u2081"
+    r = c.convert(r"\hat{p}_1")
+    assert r == "p\u0302\u2081"
+    r = c.convert(r"\hat{pc}_1")
+    assert r == "(hat(pc))\u2081"
 
 
+@pytest.mark.parametrize("keep_spaces", (False, True))
+def test_conv6(keep_spaces):
+    c = converter(keep_spaces=keep_spaces)
+    for x in (
+        r"\frac12",
+        r"\frac1 2",
+        r"\frac 12",
+        r"\frac 1 2",
+        r"\frac{1}2",
+        r"\frac{1} 2",
+        r"\frac {1}2",
+        r"\frac {1} 2",
+        r"\frac{1}{2}",
+        r"\frac{1} {2}",
+        r"\frac {1}{2}",
+        r"\frac {1} {2}",
+        r"\frac1{2}",
+        r"\frac1 {2}",
+        r"\frac 1{2}",
+        r"\frac 1 {2}",
+    ):
+        r = c.convert(x)
+        assert r == "\xbd"
+
+
+def test_conv7():
+    c = converter()
+    for x, res in {
+        r"\exists n": ("∃n", "∃n"),
+        r"\exists\ n": ("∃ n", "∃ n"),
+        r"\exists  n": ("∃n", "∃ n"),
+        r"\exists{} n": ("∃n", "∃ n"),
+        r"\exists{}n": ("∃n", "∃n"),
+    }.items():
+        for keep_spaces, obj in zip((False, True), res):
+            c.keep_spaces = keep_spaces
+            r = c.convert(x)
+            assert r == obj, (x, keep_spaces)

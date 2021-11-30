@@ -44,7 +44,13 @@ class converter:
         (True by default).
     """
 
-    def __init__(self, allow_zw=True, allow_combinings=True, ignore_newlines=True):
+    def __init__(
+        self,
+        allow_zw=True,
+        allow_combinings=True,
+        ignore_newlines=True,
+        keep_spaces=False,
+    ):
         """Initialize a convert method."""
         self.__cmds = {}
 
@@ -64,20 +70,23 @@ class converter:
             return lambda x: self.__latexfun_comb(comb, x)
 
         for cmd in data.combinings:
-            self.__cmds[cmd] = latexfuntypes.latexfun(makefun_comb(data.combinings[cmd]), 1)
+            self.__cmds[cmd] = latexfuntypes.latexfun(
+                makefun_comb(data.combinings[cmd]), 1
+            )
 
         # others
         self.__cmds[r"\frac"] = latexfuntypes.latexfun(self.__latexfun_frac, 2)
         self.__cmds[r"\sqrt"] = latexfuntypes.latexfun(self.__latexfun_sqrt, 1)
 
-        # newcommands
-        for nc in data.newcommands:
-            self.add_newcommand(nc)
-
         # config section
         self.allow_zw = allow_zw
         self.allow_combinings = allow_combinings
         self.ignore_newlines = ignore_newlines
+        self.keep_spaces = keep_spaces
+
+        # newcommands
+        for nc in data.newcommands:
+            self.add_newcommand(nc)
 
     def convert(self, expr):
         """Convert LaTeX math to Unicode text.
@@ -85,8 +94,8 @@ class converter:
         :param expr: LaTeX math expression to convert"""
 
         if self.ignore_newlines:
-            expr = expr.replace('\r','').replace('\n','')
-        parsed = parser.parse(expr)
+            expr = expr.replace("\r", "").replace("\n", "")
+        parsed = parser.parse(expr, keep_spaces=self.keep_spaces)
         outvec = []
         idx = 0
         while idx < len(parsed):
@@ -106,13 +115,19 @@ class converter:
                     outvec.append(("char", element[1]))
                     idx += 1
                     continue
-                if len(parsed) <= idx + pycmd.nargs:
+                consumed = 0
+                raw_args = []
+                for k in range(idx + 1, len(parsed)):
+                    if len(raw_args) == pycmd.nargs:
+                        break
+                    consumed += 1
+                    if parsed[k] != ("char", " "):
+                        raw_args.append(parsed[k][1])
+                if len(raw_args) != pycmd.nargs:
                     raise LatexSyntaxError
-                args = [
-                    self.convert(parsed[idx + k + 1][1]) for k in range(pycmd.nargs)
-                ]
+                args = [self.convert(arg) for arg in raw_args]
                 outvec.append(("char", pycmd.fun(args)))
-                idx += 1 + pycmd.nargs
+                idx += 1 + consumed
                 continue
             if element[0] == "subexpr":
                 outvec.append(("char", self.convert(element[1])))
@@ -212,7 +227,7 @@ class converter:
             - r'\\newcommand\\binom[2]{\\frac{#2!}{#1!(#2-#1)!}}'
         """
 
-        parsed = parser.parse(one_newcommand)
+        parsed = parser.parse(one_newcommand, keep_spaces=self.keep_spaces)
         if not (len(parsed) in (3, 6)):
             raise LatexSyntaxError
         ok = False

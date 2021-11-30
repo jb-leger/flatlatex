@@ -42,10 +42,15 @@ def parse_one_element(s):
     return (("char", c), s)
 
 
-def parse(s):
+def parse(s, keep_spaces=False):
+    last = ("", None)
     ret = []
     while len(s) > 0:
         m, s = parse_one_element(s)
         if not (m[1] == " "):
             ret.append(m)
+        else:
+            if keep_spaces and last[0] != "cmd":
+                ret.append(m)
+        last = m
     return ret
