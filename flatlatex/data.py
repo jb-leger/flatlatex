@@ -959,14 +959,14 @@ symbols = {
 
 combinings = {
     r"\hat": ("\u0302", "hat"),
-    r"\grave": ("\u0301", "grave"),
+    r"\grave": ("\u0300", "grave"),
     r"\dot": ("\u0307", "dot"),
     r"\not": ("\u0338", "not"),
     r"\overrightarrow": ("\u20d7", "overrightarrow"),
     r"\overline": ("\u0305", "overline"),
     r"\tilde": ("\u0303", "tilde"),
     r"\bar": ("\u0304", "bar"),
-    r"\acute": ("\u0300", "acute"),
+    r"\acute": ("\u0301", "acute"),
     r"\ddot": ("\u0308", "ddot"),
     r"\overleftarrow": ("\u20d6", "overleftarrow"),
     r"\check": ("\u030c", "check"),
@@ -982,4 +982,8 @@ newcommands = (
     r"\newcommand\mathmono[1]{\mono{#1}}",
     r"\newcommand\mathfrak[1]{\frak{#1}}",
     r"\newcommand\binom[2]{binom(#1,#2)}",
+    r"\newcommand\'[1]{\acute{#1}}",
+    r"\newcommand\`[1]{\grave{#1}}",
+    r"\newcommand\^[1]{\hat{#1}}",
+    r"\newcommand\widehat[1]{\hat{#1}}",
 )
