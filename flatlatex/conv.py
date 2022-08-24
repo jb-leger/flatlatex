@@ -42,9 +42,17 @@ class converter:
         are allowed (True by default).
     :attrib ignore_newlines: boolean which indicates if newlines must be removed
         (True by default).
+    :attrib keep_spaces: boolean which indicates if spaces must be keeped
+        (False by default).
     """
 
-    def __init__(self, allow_zw=True, allow_combinings=True, ignore_newlines=True):
+    def __init__(
+        self,
+        allow_zw=True,
+        allow_combinings=True,
+        ignore_newlines=True,
+        keep_spaces=False,
+    ):
         """Initialize a convert method."""
         self.__cmds = {}
 
@@ -64,29 +72,28 @@ class converter:
             return lambda x: self.__latexfun_comb(comb, x)
 
         for cmd in data.combinings:
-            self.__cmds[cmd] = latexfuntypes.latexfun(makefun_comb(data.combinings[cmd]), 1)
+            self.__cmds[cmd] = latexfuntypes.latexfun(
+                makefun_comb(data.combinings[cmd]), 1
+            )
 
         # others
         self.__cmds[r"\frac"] = latexfuntypes.latexfun(self.__latexfun_frac, 2)
         self.__cmds[r"\sqrt"] = latexfuntypes.latexfun(self.__latexfun_sqrt, 1)
 
-        # newcommands
-        for nc in data.newcommands:
-            self.add_newcommand(nc)
-
         # config section
         self.allow_zw = allow_zw
         self.allow_combinings = allow_combinings
         self.ignore_newlines = ignore_newlines
+        self.keep_spaces = keep_spaces
 
-    def convert(self, expr):
-        """Convert LaTeX math to Unicode text.
+        # newcommands
+        for nc in data.newcommands:
+            self.add_newcommand(nc)
 
-        :param expr: LaTeX math expression to convert"""
-
+    def _convert(self, expr):
         if self.ignore_newlines:
-            expr = expr.replace('\r','').replace('\n','')
-        parsed = parser.parse(expr)
+            expr = expr.replace("\r", "").replace("\n", "")
+        parsed = parser.parse(expr, keep_spaces=self.keep_spaces)
         outvec = []
         idx = 0
         while idx < len(parsed):
@@ -106,16 +113,22 @@ class converter:
                     outvec.append(("char", element[1]))
                     idx += 1
                     continue
-                if len(parsed) <= idx + pycmd.nargs:
+                consumed = 0
+                raw_args = []
+                for k in range(idx + 1, len(parsed)):
+                    if len(raw_args) == pycmd.nargs:
+                        break
+                    consumed += 1
+                    if parsed[k] != ("char", " "):
+                        raw_args.append(parsed[k][1])
+                if len(raw_args) != pycmd.nargs:
                     raise LatexSyntaxError
-                args = [
-                    self.convert(parsed[idx + k + 1][1]) for k in range(pycmd.nargs)
-                ]
+                args = [self._convert(arg) for arg in raw_args]
                 outvec.append(("char", pycmd.fun(args)))
-                idx += 1 + pycmd.nargs
+                idx += 1 + consumed
                 continue
             if element[0] == "subexpr":
-                outvec.append(("char", self.convert(element[1])))
+                outvec.append(("char", self._convert(element[1])))
                 idx += 1
                 continue
             raise Exception
@@ -172,6 +185,13 @@ class converter:
         outvec = newoutvec
         return "".join([x[1] for x in outvec])
 
+    def convert(self, x):
+        """Convert LaTeX math to Unicode text.
+
+        :param expr: LaTeX math expression to convert"""
+
+        return unicodedata.normalize("NFC", self._convert(x))
+
     def __indexed(self, a, b):
         f_sub = transliterate(data.subscript)
         bsub, ok = f_sub(b)
@@ -212,7 +232,7 @@ class converter:
             - r'\\newcommand\\binom[2]{\\frac{#2!}{#1!(#2-#1)!}}'
         """
 
-        parsed = parser.parse(one_newcommand)
+        parsed = parser.parse(one_newcommand, keep_spaces=self.keep_spaces)
         if not (len(parsed) in (3, 6)):
             raise LatexSyntaxError
         ok = False
@@ -234,7 +254,7 @@ class converter:
             expr = cmdexpr
             for i in range(len(args)):
                 expr = regex.sub("#%i" % (i + 1), args[i], expr)
-            return self.convert(expr)
+            return self._convert(expr)
 
         self.__cmds[cmdname] = latexfuntypes.latexfun(lambda x: thefun(x), nargs)
         return None
