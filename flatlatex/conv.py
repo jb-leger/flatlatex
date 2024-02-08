@@ -223,7 +223,7 @@ class converter:
         return comb[1] + "(" + expr + ")"
 
     def add_newcommand(self, one_newcommand):
-        """Add a command definiton using LaTeX syntax.
+        """Add a command definition using LaTeX syntax.
 
         :param expr: a valid \\newcommand (or \\renewcommand or \\def)
             definition.
